@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.bg-lines {
+background-color: #ffffff;
+  opacity: 1;
+  background-size: 40px 40px;
+  background-image: repeating-linear-gradient(0deg, #f3f3f3, #f3f3f3 2px, #ffffff 2px, #ffffff);
+}
+
+.bgindex {
+  background-repeat: no-repeat;
+
+}
+
+
+.animated {
+  --bg-size: 400%;
+    --color-one:#457f88;
+    --color-two: #76a5af;
+    --color-three:#042123;
+    background: linear-gradient(120deg,
+        var(--color-one),
+        var(--color-two),
+        var(--color-three),
+        var(--color-one)) 0 0 / var(--bg-size) 100%;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: move-bg 3s infinite linear;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .boujee-text {
+    animation: move-bg 8s linear infinite;
+  }
+
+  @keyframes move-bg {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
+}
+
+.textland {
+  font-family: 'Lora';
+}
+
+.txtarea {
+  /* border: none; */
+  min-height: 400px;
+  font-family: inherit;
+}
+
+.txtarea:focus {
+  outline: none;
+}
+
+
+.aiIcon {transition-duration: 75ms;}
+
+.aiIcon:hover {
+  filter: brightness(120%);
+}
+
+.dropdownMenu {
+  position: absolute;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  list-style-type: none;
+  margin: 0;
+  z-index: 1; 
+}
+
+.dropdownOption {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdownOption:hover {
+  background-color: lightgray;
+}
