@@ -11,6 +11,7 @@
   "dependencies": {
     "@grammarly/editor-sdk-react": "^2.5.1",
     "@lexical/react": "^0.11.3",
+    "@vercel/analytics": "^1.0.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "diff-match-patch": "^1.0.5",
