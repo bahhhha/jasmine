@@ -15,6 +15,9 @@ background-color: #ffffff;
 
 }
 
+.jasmineSays {
+  text-shadow: 2px 2px 0px #fff2cc, 7px 7px 10px rgba(0,0,0,0.1);
+}
 
 .animated {
   --bg-size: 400%;
@@ -68,7 +71,8 @@ background-color: #ffffff;
 .dropdownMenu {
   position: absolute;
   background-color: white;
-  padding: 5px;
+  margin-bottom: 20px;
+
   border: 1px solid black;
   border-radius: 5px;
   list-style-type: none;
@@ -83,4 +87,23 @@ background-color: #ffffff;
 
 .dropdownOption:hover {
   background-color: lightgray;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #76a5af;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #45818e;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

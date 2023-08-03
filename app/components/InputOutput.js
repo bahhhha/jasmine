@@ -8,7 +8,7 @@ const Option = ({ option, input, setActionResult, dropdownOptions }) => {
 
 	const handleDropdownClick = (author) => {
 		const result = option.action({ text: input, author });
-		console.log(result); // Log the result
+		console.log(result);
 		setActionResult(result);
 		setDropdownOpen(false);
 	};
@@ -83,20 +83,143 @@ const AIOptions = ({ value, options, setActionResult }) => {
 	);
 };
 
-const ActionResult = ({ result }) => (
-	<div className="max-w-[800px] m-auto">
-		<motion.div
-			initial={{ opacity: 0, x: 50 }}
-			animate={{ opacity: 1, x: 0 }}
-			exit={{ opacity: 0, x: 50 }}
-			transition={{ duration: 0.5 }}
-		>
-			{result}
-		</motion.div>
-	</div>
-);
+const ActionResult = ({ result, editorText, setEditorText }) => {
+	// Resolve the promise and get the actual result
+	const [resolvedResult, setResolvedResult] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
 
-const InputOutput = () => {
+	useEffect(() => {
+		setIsLoading(true);
+		result.then((data) => {
+			setResolvedResult(data);
+			setIsLoading(false);
+		});
+	}, [result]);
+
+	if (isLoading) {
+		return (
+			<div>
+				<span class="loader"></span>
+			</div>
+		);
+	}
+
+	let renderedContent;
+	let message;
+	if (resolvedResult?.type === "text") {
+		renderedContent = (
+			<p>{resolvedResult[resolvedResult.contentKey]}</p>
+		);
+		message = "Jasmine says...";
+	} else if (resolvedResult?.type === "image") {
+		renderedContent = (
+			<div className="">
+				<img
+					src={
+						resolvedResult[
+							resolvedResult.contentKey
+						][0]
+					}
+					alt="Generated content"
+				/>
+			</div>
+		);
+		message = "Jasmine shows...";
+	} else {
+		// If type is neither 'text' nor 'image', render as text
+		renderedContent = <p>{String(resolvedResult)}</p>;
+		message = "Jasmine says...";
+	}
+
+	return (
+		<div className="max-w-[800px] m-auto">
+			<motion.div
+				className="flex flex-col"
+				initial={{ opacity: 0, x: 50 }}
+				animate={{ opacity: 1, x: 0 }}
+				exit={{ opacity: 0, x: 50 }}
+				transition={{ duration: 0.5 }}
+			>
+				<div className="space-x-4 mb-5">
+					<button
+						className=""
+						onClick={async () => {
+							if (
+								resolvedResult?.type ===
+								"text"
+							) {
+								setEditorText(
+									resolvedResult[
+										resolvedResult
+											.contentKey
+									]
+								);
+							}
+						}}
+					>
+						<img
+							className="hover:brightness-125"
+							src="/copy.svg"
+							title="Copy to editor"
+						/>
+					</button>
+					<button
+						className=""
+						onClick={async () => {
+							if (
+								resolvedResult?.type ===
+								"text"
+							) {
+								navigator.clipboard.writeText(
+									resolvedResult[
+										resolvedResult
+											.contentKey
+									]
+								);
+							}
+						}}
+					>
+						<img
+							className="hover:brightness-125"
+							src="/clipboard.svg"
+							title="Copy to clipboard"
+						/>
+					</button>
+					<button
+						className=""
+						onClick={async () => {
+							if (
+								resolvedResult?.type ===
+								"text"
+							) {
+								setEditorText(
+									editorText +
+										resolvedResult[
+											resolvedResult
+												.contentKey
+										]
+								);
+							}
+						}}
+					>
+						<img
+							className="hover:brightness-125"
+							src="/file-plus.svg"
+							title="Add to editor"
+						/>
+					</button>
+				</div>
+				<p className="mb-5 text-3xl font-extrabold text-[#45818e] jasmineSays">
+					{message}
+				</p>
+				{renderedContent}
+			</motion.div>
+		</div>
+	);
+};
+
+const InputOutput = ({ isLoggedIn }) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const options = [
 		{
 			label: "Build Character",
@@ -104,26 +227,51 @@ const InputOutput = () => {
 			action: async ({ text }) => {
 				try {
 					const response = await axios.post(
-						"https://jasmine-c6nm.onrender.com/characters/build_character",
-						{ text }
+						`https://jasmine-c6nm.onrender.com/characters/?text=${encodeURIComponent(
+							text
+						)}`,
+						{},
+						{
+							headers: {
+								accept: "application/json",
+							},
+						}
 					);
-					return response.data;
+					console.log(response.data);
+					return {
+						...response.data,
+						type: "image",
+						contentKey: "image",
+					};
 				} catch (error) {
 					console.error(error);
 					return `Error: ${error.message}`;
 				}
 			},
 		},
+
 		{
 			label: "Build Stage",
 			img: "trees.svg",
 			action: async ({ text }) => {
 				try {
 					const response = await axios.post(
-						"https://jasmine-c6nm.onrender.com/characters/build_stage",
-						{ text }
+						`https://jasmine-c6nm.onrender.com/characters/?text=${encodeURIComponent(
+							text
+						)}`,
+						{},
+						{
+							headers: {
+								accept: "application/json",
+							},
+						}
 					);
-					return response.data;
+					console.log(response.data);
+					return {
+						...response.data,
+						type: "image",
+						contentKey: "image",
+					};
 				} catch (error) {
 					console.error(error);
 					return `Error: ${error.message}`;
@@ -134,19 +282,25 @@ const InputOutput = () => {
 			label: "Finish Thought",
 			img: "pencil-line.svg",
 			action: async ({ text }) => {
+				setIsLoading(true);
 				try {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/finish_thought?incomplete_text=${encodeURIComponent(
 							text
 						)}`
 					);
-					return response.data.extended_idea;
+					setIsLoading(false);
+					return {
+						extended_idea:
+							response.data.extended_idea,
+						type: "text",
+						contentKey: "extended_idea",
+					};
 				} catch (error) {
 					console.error(error);
-					return {
-						originalText: `Error: ${error.message}`,
-						newText: "",
-					};
+					setIsLoading(false);
+
+					return `Error: ${error.message}`;
 				}
 			},
 		},
@@ -154,20 +308,27 @@ const InputOutput = () => {
 			label: "Find imperfections",
 			img: "factory.svg",
 			action: async ({ text }) => {
+				setIsLoading(true);
+
 				try {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/fix_imperfections?text=${encodeURIComponent(
 							text
 						)}`
 					);
+					setIsLoading(false);
 
-					return response.data.corrected_script;
+					return {
+						corrected_script:
+							response.data.corrected_script,
+						type: "text",
+						contentKey: "corrected_script",
+					};
 				} catch (error) {
 					console.error(error);
-					return {
-						originalText: `Error: ${error.message}`,
-						newText: "",
-					};
+					setIsLoading(false);
+
+					return `Error: ${error.message}`;
 				}
 			},
 		},
@@ -176,6 +337,8 @@ const InputOutput = () => {
 			img: "clapperboard.svg",
 			action: async ({ text, author }) => {
 				try {
+					setIsLoading(true);
+
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/imitate?text=${encodeURIComponent(
 							text
@@ -184,9 +347,17 @@ const InputOutput = () => {
 						)}`
 					);
 					console.log(response);
-					return response.data.script; // Assuming the response data is the imitated text
+					setIsLoading(false);
+
+					return {
+						script: response.data.script,
+						type: "text",
+						contentKey: "script",
+					};
 				} catch (error) {
 					console.error(error);
+					setIsLoading(false);
+
 					return `Error: ${error.message}`;
 				}
 			},
@@ -201,7 +372,7 @@ const InputOutput = () => {
 	}, [input]);
 
 	return (
-		<div className="py-8 flex justify-center w-[1920px] m-auto">
+		<div className=" flex justify-center w-screen m-auto">
 			<motion.div
 				style={{
 					display: "flex",
@@ -210,9 +381,6 @@ const InputOutput = () => {
 				}}
 				className="flex justify-center"
 				initial={{ marginLeft: 0 }}
-				animate={{
-					marginLeft: actionResult ? "-10%" : "0",
-				}}
 				transition={{
 					duration: 1,
 					type: "spring",
@@ -227,11 +395,14 @@ const InputOutput = () => {
 						setActionResult={setActionResult}
 					/>
 				</div>
+				{/* {isLoading && <div>Hello WOrld</div>} */}
 				<div>
 					<AnimatePresence>
 						{actionResult && (
 							<ActionResult
 								result={actionResult}
+								setEditorText={setInput}
+								editorText={input}
 							/>
 						)}
 					</AnimatePresence>
