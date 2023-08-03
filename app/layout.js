@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import { Chivo_Mono } from "next/font/google";
 import Header from "./components/Header";
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
 			<body className={inter.className}>
 				<Header />
 				{children}
+				<Analytics />
 			</body>
 		</html>
 	);
