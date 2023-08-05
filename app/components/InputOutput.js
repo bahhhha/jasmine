@@ -98,9 +98,14 @@ const ActionResult = ({ result, editorText, setEditorText }) => {
 
 	if (isLoading) {
 		return (
-			<div>
-				<span class="loader"></span>
-			</div>
+			<AnimatePresence>
+				<div className="m-auto flex flex-1">
+					<span className="loader"></span>
+				</div>
+			</AnimatePresence>
+			// <div className="m-auto text-3xl font-extrabold text-[#45818e] jasmineSays">
+			// 	Jasmine thinks...
+			// </div>
 		);
 	}
 
@@ -132,7 +137,7 @@ const ActionResult = ({ result, editorText, setEditorText }) => {
 	}
 
 	return (
-		<div className="max-w-[800px] m-auto">
+		<div className="max-w-[800px] ">
 			<motion.div
 				className="flex flex-col"
 				initial={{ opacity: 0, x: 50 }}
@@ -194,6 +199,7 @@ const ActionResult = ({ result, editorText, setEditorText }) => {
 							) {
 								setEditorText(
 									editorText +
+										"\n" +
 										resolvedResult[
 											resolvedResult
 												.contentKey
@@ -219,6 +225,7 @@ const ActionResult = ({ result, editorText, setEditorText }) => {
 };
 
 const InputOutput = ({ isLoggedIn }) => {
+	const [chosenOptions, setChosenOptions] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const options = [
 		{
@@ -229,13 +236,7 @@ const InputOutput = ({ isLoggedIn }) => {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/?text=${encodeURIComponent(
 							text
-						)}`,
-						{},
-						{
-							headers: {
-								accept: "application/json",
-							},
-						}
+						)}`
 					);
 					console.log(response.data);
 					return {
@@ -257,7 +258,7 @@ const InputOutput = ({ isLoggedIn }) => {
 				try {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/?text=${encodeURIComponent(
-							text
+							text + ` (${chosenOptions})})`
 						)}`,
 						{},
 						{
@@ -266,9 +267,10 @@ const InputOutput = ({ isLoggedIn }) => {
 							},
 						}
 					);
-					console.log(response.data);
+					const resolvedResponse = response;
+					console.log(text + ` (${chosenOptions})`);
 					return {
-						...response.data,
+						...resolvedResponse.data,
 						type: "image",
 						contentKey: "image",
 					};
@@ -286,7 +288,7 @@ const InputOutput = ({ isLoggedIn }) => {
 				try {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/finish_thought?incomplete_text=${encodeURIComponent(
-							text
+							text + ` (${chosenOptions})`
 						)}`
 					);
 					setIsLoading(false);
@@ -313,7 +315,7 @@ const InputOutput = ({ isLoggedIn }) => {
 				try {
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/fix_imperfections?text=${encodeURIComponent(
-							text
+							text + ` (${chosenOptions})`
 						)}`
 					);
 					setIsLoading(false);
@@ -341,7 +343,7 @@ const InputOutput = ({ isLoggedIn }) => {
 
 					const response = await axios.post(
 						`https://jasmine-c6nm.onrender.com/characters/imitate?text=${encodeURIComponent(
-							text
+							text + ` (${chosenOptions})`
 						)}&author=${encodeURIComponent(
 							author
 						)}`
@@ -366,7 +368,6 @@ const InputOutput = ({ isLoggedIn }) => {
 
 	const [input, setInput] = useState("");
 	const [actionResult, setActionResult] = useState("");
-
 	useEffect(() => {
 		console.log(input);
 	}, [input]);
@@ -378,8 +379,9 @@ const InputOutput = ({ isLoggedIn }) => {
 					display: "flex",
 					width: "100%",
 					maxWidth: "1400px",
+					spaceBetween: "20px",
 				}}
-				className="flex justify-center"
+				className="flex justify-center space-x-8"
 				initial={{ marginLeft: 0 }}
 				transition={{
 					duration: 1,
@@ -387,8 +389,12 @@ const InputOutput = ({ isLoggedIn }) => {
 					bounce: 0.25,
 				}}
 			>
-				<div style={{ width: "100%" }}>
-					<Editor input={input} setInput={setInput} />
+				<div>
+					<Editor
+						input={input}
+						setInput={setInput}
+						setChosenOptions={setChosenOptions}
+					/>
 					<AIOptions
 						value={input}
 						options={options}
@@ -396,17 +402,15 @@ const InputOutput = ({ isLoggedIn }) => {
 					/>
 				</div>
 				{/* {isLoading && <div>Hello WOrld</div>} */}
-				<div>
-					<AnimatePresence>
-						{actionResult && (
-							<ActionResult
-								result={actionResult}
-								setEditorText={setInput}
-								editorText={input}
-							/>
-						)}
-					</AnimatePresence>
-				</div>
+				<AnimatePresence>
+					{actionResult && (
+						<ActionResult
+							result={actionResult}
+							setEditorText={setInput}
+							editorText={input}
+						/>
+					)}
+				</AnimatePresence>
 			</motion.div>
 		</div>
 	);

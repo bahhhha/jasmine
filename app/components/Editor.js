@@ -5,12 +5,25 @@ import TextareaAutosize from "react-textarea-autosize";
 import { GrammarlyEditorPlugin } from "@grammarly/editor-sdk-react";
 import Dropdown from "./Dropdown"; // import the Dropdown component
 
-const Editor = ({ input, setInput }) => {
-	const [genre, setGenre] = useState("");
-	const [type, setType] = useState("");
-
+const Editor = ({ input, setInput, setChosenOptions }) => {
 	const genreOptions = ["Comedy", "Drama", "Horror", "Sci-Fi", "Romance"];
 	const typeOptions = ["Movie", "Theater", "TV Series", "Short Film"];
+	const timelineOptions = [
+		"N/A",
+		"Medieval",
+		"20th century",
+		"Modern",
+		"Future",
+		"Cyperpunk",
+	];
+
+	const [genre, setGenre] = useState(genreOptions[0]);
+	const [type, setType] = useState(typeOptions[0]);
+	const [timeline, setTimeline] = useState(timelineOptions[0]);
+
+	useEffect(() => {
+		setChosenOptions(genre + ", " + type + ", " + timeline);
+	}, [genre, type, timeline]);
 
 	useEffect(() => {
 		// You can add logic here to fetch initial input from a source
@@ -35,6 +48,12 @@ const Editor = ({ input, setInput }) => {
 					options={typeOptions}
 					selectedOption={type}
 					setSelectedOption={setType}
+				/>
+				<Dropdown
+					label="Timeline"
+					options={timelineOptions}
+					selectedOption={timeline}
+					setSelectedOption={setTimeline}
 				/>
 			</div>
 			<div className="space-y-1 flex flex-col">
