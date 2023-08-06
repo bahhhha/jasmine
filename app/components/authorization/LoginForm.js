@@ -33,13 +33,13 @@ const LoginForm = ({ setIsLoggedIn }) => {
 				}
 			);
 			if (!response.ok) {
+				console.log(Error);
 				throw new Error("Login failed. Please try again.");
 			}
 			const data = await response.json();
 			console.log(data);
 
 			// Redirect to another page upon successful login
-			setIsLoggedIn(true);
 			router.push("/pages/canvas");
 		} catch (err) {
 			setError(err.message);

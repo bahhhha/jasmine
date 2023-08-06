@@ -21,20 +21,20 @@ export default function Home() {
 		{
 			label: "Fast",
 			description:
-				"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus consequuntur sunt, odit nemo facilis amet!",
+				"Optimized algorithms allow for fast and reliable input and output operations.",
 			icon: "/icons/zap.svg",
 		},
 		{
 			label: "Lightweight",
 			description:
-				"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus consequuntur sunt, odit nemo facilis amet!",
+				"Jasmine is a lightweight app that runs on any device and does not require any configuration.",
 
 			icon: "/icons/feather.svg",
 		},
 		{
 			label: "Easy to use",
 			description:
-				"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus consequuntur sunt, odit nemo facilis amet!",
+				"Simple design and intuitive interface make Jasmine a breeze to use. And... it's FREE!",
 
 			icon: "/icons/check.svg",
 		},
@@ -55,15 +55,18 @@ export default function Home() {
 			<div className=" bg-[#fff2cc] py-8">
 				<div>
 					<div className="text-center text-[#042123] md:text-6xl text-4xl pt-36 font-bold">
-						Unleash your{" "}
-						<span className="">mind</span>.
+						Redefining screenwriting.
 					</div>
 					<div className="lg:text-center text-left md:w-[600px] w-[300px] text-md m-auto pt-12">
-						Lorem ipsum dolor sit amet consectetur
-						adipisicing elit. Similique impedit
-						numquam, animi nam architecto atque,
-						eos laboriosam unde molestiae quae
-						deleniti recusandae quia cupiditate!
+						Unleash your creativity with Jasmine,
+						the app designed exclusively for
+						screenwriters. Whether you're a
+						seasoned professional or just starting
+						your journey into the world of
+						storytelling, Jasmine has all the
+						tools you need to bring your script to
+						life and captivate audiences
+						worldwide.
 					</div>
 				</div>
 				<div className="text-center mt-20 mb-36 text-2xl font-bold">
