@@ -10,8 +10,8 @@ const Canvas = () => {
 	};
 
 	return (
-		<div className="bg-lines w-screen">
-			<div className="py-24 pb-36">
+		<div className="bg-lines max-w-screen">
+			<div className="py-16 md:pt-24 md:pb-36 ">
 				<div className="text-xl py-5 text-center font-light text-[#042123]">
 					Start your masterpiece below.{" "}
 					<span className="underline decoration-[#f0cf6c]">

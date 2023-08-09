@@ -16,10 +16,10 @@ const Header = () => {
 				<img src="/film.svg"></img>
 				<p>Jasmine</p>
 			</div>
-			<nav className="font-light md:space-x-12 space-x-4 md:text-lg text-md">
+			<nav className="font-light md:space-x-12 space-x-4 md:text-lg text-sm">
 				<Link
 					href="/"
-					className="text-[#fff2cc] font-semibold hover:bg-[#45818e] hover:text-white duration-100 bg-[#042123] px-4 py-3 rounded-xl"
+					className="text-[#fff2cc] font-semibold hover:bg-[#45818e] hover:text-white duration-100 bg-[#042123] md:px-4 md:py-3 px-2 py-2 rounded-xl"
 				>
 					Home
 				</Link>

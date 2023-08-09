@@ -19,6 +19,7 @@ const Option = ({ option, input, setActionResult, dropdownOptions }) => {
 			onMouseLeave={() => setDropdownOpen(false)}
 		>
 			<button
+				className="text-center flex flex-col items-center justify-center text-[#fff2cc] font-medium"
 				onClick={() =>
 					!dropdownOptions && handleDropdownClick()
 				}
@@ -26,8 +27,9 @@ const Option = ({ option, input, setActionResult, dropdownOptions }) => {
 				<img
 					src={`/icons/${option.img}`}
 					title={option.label}
-					className="aiIcon hover:bg-[#054044] p-2 rounded-2xl"
+					className="aiIcon hover:bg-[#054044] p-2 duration-150 rounded-2xl"
 				/>
+				<div className="opacity-100">{option.label}</div>
 			</button>
 			{dropdownOpen && dropdownOptions && (
 				<ul className="dropdownMenu">
@@ -52,7 +54,7 @@ const Option = ({ option, input, setActionResult, dropdownOptions }) => {
 
 const AIOptions = ({ value, options, setActionResult }) => {
 	const optionsToShow = options.map((option) => (
-		<li key={option.label}>
+		<li className="" key={option.label}>
 			<Option
 				option={option}
 				input={value}
@@ -72,11 +74,11 @@ const AIOptions = ({ value, options, setActionResult }) => {
 	));
 
 	return (
-		<div className="bg-[#042123] py-2 space-y-1 border-2 border-[#fff2cc] lg:w-[720px] m-auto rounded-b-xl drop-shadow-lg ">
+		<div className="bg-[#042123] py-4 space-y-1 border-2 border-[#fff2cc] lg:w-[720px] w-[360px] m-auto rounded-b-xl drop-shadow-lg ">
 			<div className="text-[#054044] font-extrabold text-center">
 				AI
 			</div>
-			<ol className="flex justify-center space-x-20">
+			<ol className="flex md:justify-center justify-around md:space-x-20 ">
 				{optionsToShow}
 			</ol>
 		</div>
@@ -229,7 +231,7 @@ const InputOutput = ({ isLoggedIn }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const options = [
 		{
-			label: "Build Character",
+			label: "Character",
 			img: "user-square.svg",
 			action: async ({ text }) => {
 				try {
@@ -252,7 +254,7 @@ const InputOutput = ({ isLoggedIn }) => {
 		},
 
 		{
-			label: "Build Stage",
+			label: "Stage",
 			img: "trees.svg",
 			action: async ({ text }) => {
 				try {
@@ -281,7 +283,7 @@ const InputOutput = ({ isLoggedIn }) => {
 			},
 		},
 		{
-			label: "Finish Thought",
+			label: "Finish",
 			img: "pencil-line.svg",
 			action: async ({ text }) => {
 				setIsLoading(true);
@@ -307,7 +309,7 @@ const InputOutput = ({ isLoggedIn }) => {
 			},
 		},
 		{
-			label: "Find imperfections",
+			label: "Fix",
 			img: "factory.svg",
 			action: async ({ text }) => {
 				setIsLoading(true);
@@ -373,15 +375,16 @@ const InputOutput = ({ isLoggedIn }) => {
 	}, [input]);
 
 	return (
-		<div className=" flex justify-center w-screen m-auto">
+		<div className="flex md:flex-row flex-col justify-center max-w-screen m-auto">
 			<motion.div
 				style={{
 					display: "flex",
+
 					width: "100%",
 					maxWidth: "1400px",
 					spaceBetween: "20px",
 				}}
-				className="flex justify-center space-x-8"
+				className="flex flex-col md:flex-row justify-center md:space-x-8 p-4 md:p-0 space-y-8 md:space-y-0"
 				initial={{ marginLeft: 0 }}
 				transition={{
 					duration: 1,

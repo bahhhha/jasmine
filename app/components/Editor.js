@@ -36,7 +36,7 @@ const Editor = ({ input, setInput, setChosenOptions }) => {
 
 	return (
 		<div className="p-2 flex flex-col">
-			<div className="dropdowns-container flex md:w-[720px]  flex-row space-x-5 m-auto pb-8">
+			<div className="dropdowns-container flex md:w-[720px] w-[360px] md:flex-row flex-col md:space-x-5 m-auto pb-8">
 				<Dropdown
 					label="Genre"
 					options={genreOptions}
@@ -59,10 +59,10 @@ const Editor = ({ input, setInput, setChosenOptions }) => {
 			<div className="space-y-1 flex flex-col">
 				<GrammarlyEditorPlugin
 					clientId="client_8rn4gTQHDHgJwYTtPEXz8q"
-					className="md:w-[720px] m-auto"
+					className="md:w-[720px]  m-auto"
 				>
 					<TextareaAutosize
-						className="shadow-md md:w-[720px] txtarea text-md min-h-[400px] p-4 border-2 border-[#062325] rounded-t-md"
+						className="shadow-md md:w-[720px] w-[360px] txtarea text-md md:min-h-[400px] min-h-[200px] p-4 border-2 border-[#062325] rounded-t-md"
 						value={input}
 						onChange={handleChange}
 					/>
