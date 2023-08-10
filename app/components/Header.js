@@ -24,13 +24,13 @@ const Header = () => {
 					Home
 				</Link>
 				<Link
-					href="/"
+					href="/pages/about"
 					className="hover:text-[#45818e] duration-100"
 				>
 					About
 				</Link>
 				<Link
-					href="/"
+					href="/pages/about"
 					className="hover:text-[#45818e] duration-100"
 				>
 					Contact
